@@ -1,0 +1,110 @@
+---
+title: "Advancement Proposal"
+author: "Dustin Pluta"
+date: "January 31, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Research Objectives
+
+Neuroimaging technologies have given scientists the means to study the relationship of _in vivo_ brain activity and the resultant cognition and behavior in unprecedented detail.  These technologies are being constantly improved and refined, leading to studies involving more subjects and a wide variety of measured features from multiple data sources, which has in turn required more sophisticated statistical methods to make efficient and effective use of the data.  
+
+Despite significant progress in cognitive neuroscience and neurophysiology, there remain many unknowns regarding the mechanisms and factors of brain function.
+
+_Aim 1._ To develop __flexible global association testing methods__ suitable for inference with high-dimenesional multi-modal data produced by current neuroimaging studies.  These methods will provide a means to quickly explore possible significant relationships in these high-dimensional data sets as part of a preliminary analysis.  While many such methods currently exist, a rigorous methodology for effectively applying these methods in high-dimensional settings is still needed.  The developed methods will target applications to imaging genetics data in particular, with a focus on meaningful interpretation in terms of standard concepts in the genetics literature, such as phenotype heritability.
+
+_Aim 2._ To develop __multi-subject dynamic connectivity models__ for fMRI and EEG data.  Many approaches to modeling dynamic connectivity have been proposed in recent years, but the majority of these models are not able to jointly model multiple subjects, and many require unreasonable assumptions regarding the scale and structure of relevant features. The developed models will extend the switching factor VAR model to multiple subjects, which will allow for the estimation of recurring connectivity states that are common across subjects, without requiring the specification of a time scale or the temporal alignment of subject data.
+
+_Aim 3._ To develop __models for covariate adjusted inference for dynamic connectivity__ in multi-subject non-stationary multivariate time series.  Motivated by the scientific goal of understanding the genetic influences on dynamic connectivity features, the models in Aim 2 will be further developed to allow for covariate adjustment, and the estimation and interpretation of covariate effects.
+
+_Aim 4._ To develop __semi-parametric Bayesian models for dynamic connectivity__.  The sf-VAR models developed in Aims 2 and 3 will be fit using a multi-stage estimation method, which may reduce the efficiency of the methods.  In contrast, Bayesian semi-parametric models offer a more systematic approach to joint modeling and inclusion of covariates.  Due to the high-dimensionality of the data, the application of these models will require developments in computational methods for fitting high-dimensional Bayesian models.
+
+_Aim 5._ __For broad impact on science:__ The above developed models will be applied to thoroughly analyze imaging genetics data from a study of 1000 healthy Chinese college students, collected by collaborators at Beijing Normal University.  The data includes measures from a variety of psychological tasks related to learning and memory, and EEG, fMRI, and DTI imaging, as well as genetic information in the form of approximately $5 \times 10^5$ SNPs.  The goals of the study include the identification of genetic factors that significantly influence both neurological activity and behavioral outcomes.  Code for the applied methods will be made publicly available in an `R` package.
+
+The __main intellectual contribution of the research__ consists of the extension of current models for dynamic connectivity to jointly model the effect of covariates on dynamic connectivity across multiple subjects.
+
+# Background and Preliminary Results
+
+## Description of connectivity measures for fMRI and EEG
+
+## Description of Genetics and Relevance to Neurophysiology
+
+## Results in imaging genetics:
+
++ Alzheimer's disease and schizophrenia
++ Heritability of neurophysiological features such as cortex thickness and brain volume
++ Heritability of working memory performance
++ Significance of connectivity measures in determining behavioral outcomes
++ Scientific importance of dynamic connectivity beyond what is offered by static connectivity measures
++ Previous approaches for dynamic connectivity
+
+## Preliminary Results from Simulations
+
+## Preliminary Results from BNU Data
+
+## Preliminary Results from sf-VAR Modeling
+
+# Proposed Research
+
+## Aim 1: Adaptive Mantel test for Global Association Testing in Imaging Genetics Data
+
+## Aim 2: Multi-subject Extensions of the sf-VAR Dynamic Connectivity Model
+
+## Aim 3: Inference and Estimation of Covariate Effects in the sf-VAR Model
+
+## Aim 4: Semi-parametric Bayesian Approaches to Dynamic Connectivity Modeling
+
+## Aim 5: Broad Scientific Impact: Data Analysis and Software Development
+
+## Model Assessment and Validation
+
+- Simulations
+- Scientific relevance of conclusions
+- 
+
+## Technical Challenges
+
+- Identification of common brain states across subjects
+- Computational issues in model fitting
+- Sensible inclusion of covariates
+- Sensible choice of priors for Bayesian modeling
+- Identifying features of interest for inference
+- Data pre-processing
+
+# Coordination Plan
+
+## Timeline
+
+- _Aim 1:_ Substantial work toward this aim has been completed as of __January 30th, 2018__, culminating in the manuscript _Adaptive Mantel Test for Penalized Inference, with Applications to Imaging Genetics_, which introduces the adaptive Mantel test and describes the basic methodology for applying the test.  This manuscript will be submitted for publication by __February 28th, 2018__.  A thorough analysis of the BNU data with the adaptive Mantel test will be prepared for publication, targetting a submission in __June 2018__.
+
+- _Aim 2:_ Code for the single subject sf-VAR model has been made available by our collaborator Chee-Ming Ting.  This code will be adapted for multi-subject modeling, and applied to simulated and real-world data, with results available by __February 28th, 2018__. The method and results will be written up and submitted for publication by __July 2018__.
+
+- _Aim 3:_ From the results of Aim 2, tests for significant genetic factors relating to dynamic connectivity features will be conducted, with results presented as part of the Advancement Exam, to be held on __March 28th, 2018__.  The method and results will be written up and submitted for publication by __September 2018__.
+
+- _Aim 4:_ Model proposal and supporting background literature will be presented as part of the Advancement Exam, __March 28th, 2018__.  A simulation study will conducted in Summer 2018.  Further model development and application to real data will occur throughout 2018, targeting a manuscript submission in __January 2019__.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
