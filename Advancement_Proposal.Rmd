@@ -52,6 +52,8 @@ The __main intellectual contribution of the research__ consists of the extension
 
 ## Aim 1: Adaptive Mantel test for Global Association Testing in Imaging Genetics Data
 
+
+
 ## Aim 2: Multi-subject Extensions of the sf-VAR Dynamic Connectivity Model
 
 ## Aim 3: Inference and Estimation of Covariate Effects in the sf-VAR Model
@@ -86,6 +88,8 @@ The __main intellectual contribution of the research__ consists of the extension
 - _Aim 3:_ From the results of Aim 2, tests for significant genetic factors relating to dynamic connectivity features will be conducted, with results presented as part of the Advancement Exam, to be held on __March 28th, 2018__.  The method and results will be written up and submitted for publication by __September 2018__.
 
 - _Aim 4:_ Model proposal and supporting background literature will be presented as part of the Advancement Exam, __March 28th, 2018__.  A simulation study will conducted in Summer 2018.  Further model development and application to real data will occur throughout 2018, targeting a manuscript submission in __January 2019__.
+
+# References
 
 
 
