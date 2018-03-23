@@ -1,5 +1,5 @@
 ---
-title: "High-dimensional Inference for Imaging Genetics with the Adaptive Mantel Test"
+title: "Methods for High-dimensional Inference, with Applications to Imaging Genetics"
 author: "Dustin Pluta"
 date: "28 Mar 2018"
 output:
@@ -24,14 +24,14 @@ load("dat/dat_gcta_results.RData")
 ```
 
 layout: true
-background-image: url(img/bg_for_image_slide.png)
+background-image: url(img/bg.png)
 background-position: center
 background-size: fill
 
 ---
-background-image: url(img/seals.png) 
+background-image: url(img/seals_new.png) 
 background-position: center
-background-size: contain
+background-size: fill
 
 # Acknowledgements
 
@@ -39,26 +39,24 @@ background-size: contain
 
 * __Chuansheng Chen__, UCI, Dept. of Psychology and Social Behavior
 
-* __Zhaoxia Yu__, UCI, Dept. of Statistics
-
 * __Hernando Ombao__, KAUST, Dept. of Statistics
+
+* __Zhaoxia Yu__, UCI, Dept. of Statistics
 
 * __Tong Shen__, UCI, Dept. of Statistics (PhD Student)
 
 ---
 ## Overview of Talk
 
-0. The scientific setting of __connectome genetics__.
+0. Scientific background of __connectome genetics__.
 
-1. __Mantel test__ and distance-based association testing.
+1. __Mantel test__ and metric-based association testing.
 
 2. The __adaptive Mantel test__ for penalized inference.
 
-3. __Applications__ of the adaptive Mantel test.
+3. Future Work: __Methods for dynamic connectivity__ and __manifold mixed effects model__.
 
-4. __Manifold mixed effects model__.
-
-5. Methods for __dynamic connectivity__.
+***
 
 ### Links
 
@@ -73,24 +71,20 @@ background-size: contain
 background-image:
 class: center, inverse, middle
 
-# [0] Scientific Setting of Connectome Genetics
+# Scientific Background of Connectome Genetics
 
 ---
-## Scientific Setting
+## Scientific Background
 .pull-left[.full-width[.content-box-yellow[__Connectome__<br><br>The total set of physical and functional relationships between all brain regions.]]]
-.pull-right[
-```{r echo=FALSE, out.height="60%", out.width="60%"}
-knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/visualizing_brain_connectivity.jpg")
+.pull-right[.shadow[
+```{r echo=FALSE, out.height="100%", out.width="100%"}
+knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/visualizing_brain_connectivity_small.jpg")
 ```
-]
+]]
 
-#### Types of Connectivity
+***
 
-1. __Functional:__ Measures the degree of correspondence between activity in two regions, typically quantified by Pearson's correlation or coherence.
-
-2. __Effective:__ Measures the predictability of activity in one region given the activity in another region, usually in the sense of Granger of causality from a vector autoregressive (VAR) model.
-
-3. __Structural:__ Measures the strength/quantity of physical connections between brain regions, for instance, by measuring the white matter fiber tracts that connect two regions.
+.full-width[.content-box-blue[__Functional Connectivity__<br><br>Measures the level of correspondence between activity in two regions, typically quantified by Pearson's correlation or coherence.]]
 
 ---
 background-image: 
@@ -98,35 +92,31 @@ background-position: center
 background-size: contain
 class: center, inverse
 
-## Coherence
+# Functional Connectivity: Coherence
 
-```{r echo=FALSE, out.height="100%", out.width="100%"}
+```{r echo=FALSE, out.height="150%", out.width="150%", fig.align='center', fig.pos='H'}
 knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/Coh-Illustration2.jpg")
 ```
 
 
 ---
-## Scientific Setting
+## Scientific Background
 .pull-left[.full-width[.content-box-green[__Genome__<br><br>The set of all genes and genetic material in an organism.]]]
 .pull-right[
-```{r echo=FALSE, out.height="70%", out.width="70%"}
-knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/UCSC_human_chromosome_colours.png")
+```{r echo=FALSE, out.height="80%", out.width="80%"}
+knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/UCSC_human_chromosome_colours_small.png")
 ```
 ]
 
-#### Some Types of Genetic Data
+***
 
-1. __Single Nucleotide Polymorphisms (SNPs)__ Are locations in the DNA that exhibit particularly high variation across individuals (in humans).  They are stable, abundant (~10 million total), and easy to measure.
-
-2. __Gene Expression Data__ Measures the strength of expression of a particular gene.  Expression levels differ according to the tissue type, and can vary over time.
-
-3. __Copy Number Variations__ Large DNA segments that vary in copy number relative to a reference genome.
+.full-width[.content-box-green[__Single Nucleotide Polymorphisms (SNPs)__<br><br> Are locations in the DNA that exhibit particularly high variation across individuals (in humans).]]
 
 ---
 background-image: url(img/snp_diagram_large.png)
 background-position: center
 background-size: contain
-class: center
+class: center, inverse
 
 # SNPs
 
@@ -137,82 +127,62 @@ background-size: contain
 class: center
 
 ---
-## Heritability
+## Scientific Background
 
-.full-width[.content-box-green[__Heritability__ of a phenotypic trait refers to the amount of variation of the trait that is explained by genetic effects (or possibly genetic-environmental effects).]]
+.full-width[.content-box-green[__Heritability__ of a phenotypic trait refers to the amount of variation of the trait that is explained by genetic effects.]]
 
-* __Broad-sense heritability__ $(H^2)$ is defined as the phenotypic variation explained by all possible genetic effects, which includes additive effects, higher-order interactions, epistatic effects, and other genetic sources.
-
-  + Estimating and quantifying broad-sense heritability is challenging due 
-  to the complex nature of genetic interactions.
-  
-* __Narrow-sense heritability__ $(h^2)$ refers to phenotypic variation explained 
-just by _additive_ genetic effects only.
-
+.full-width[.content-box-orange[__Narrow-sense heritability__ $(h^2)$ refers to phenotypic variation explained just by _additive_ genetic effects only.]]
 
 ---
-background-image: url(img/broad_heritability_env.png)
-background-position: center
-background-size: contain
-class: center
+## Scientific Background
 
-## Broad-sense Heritability
-
----
-background-image: url(img/narrow_heritability.png)
-background-position: center
-background-size: contain
-class: center
-
-## Narrow-sense Heritability
-
----
-## Scientific Setting
-
-#### Estimating Heritability with GCTA
+#### Estimating Heritability with Variance Components Model
 
 * A popular approach to estimate narrow-sense heritability of a phenotype is the
-_variance components_ model.
+_variance components_ (*random effects*) model.
 
-$$Y = X \beta + \varepsilon,$$
+$$Y = X b + \varepsilon,$$
 
 with
-* $\text{var} (Y) = XX'\sigma^2_{\beta} + I \sigma^2_{\varepsilon}$,
+* $\text{Var} (Y) = \sigma^2_{b}XX^T + \sigma^2_{\varepsilon}I_n$,
 
-* $\beta \sim N(0, I \sigma^2_{\beta})$ is a random vector of SNP effects,
+* $b \sim N(0, \sigma^2_{b}I_p)$ is a random vector of SNP effects,
 
-* $\varepsilon \sim N(0, I \sigma^2_{\varepsilon})$ residual vector,
+* $\varepsilon \sim N(0, \sigma^2_{\varepsilon}I_n)$ residual vector,
 
-* $X$ the SNP data matrix (column centered and scaled)
+* $X$ is the SNP data matrix (column centered and scaled).
 
 ---
-## Scientific Setting
+## Scientific Background
 
-#### Estimating Heritability with GCTA
+#### Estimating Heritability with Variance Components Model
 
 * The above random effects model can be rewritten as
 
 $$Y = g + \varepsilon,$$
 
-where $g \sim N(0, \sigma_g^2G)$, for $G = XX^T/p$ and $\sigma^2_g = p\sigma^2_{\beta}$.
+where $g \sim N(0, \sigma_g^2G)$, for $G = XX^T/p$ and $\sigma^2_g = p\sigma^2_{b}$.
 
-* Narrow-sense heritability of the phenotype measured 
+__Narrow-sense heritability__ of the phenotype measured 
 by $Y$ can then be estimated as 
 
 $$\hat h^2 = \frac{\hat\sigma^2_g}{\hat \sigma^2_g + \hat\sigma^2_{\varepsilon}}.$$
+
+$$\hat h^2 = \frac{\text{tr}\left(\hat\Sigma_g\right)}{\text{tr}\left(\hat \Sigma_g\right) + \text{tr}\left(\hat\Sigma_{\varepsilon}\right)},$$
+
+where $\hat\Sigma_g = \hat\sigma^2_g G, \hat\Sigma_{\varepsilon} = \hat\sigma^2_{\varepsilon}I_n$.
 
 ---
 background-image:
 class: center, inverse, middle
 
-# [1] __Mantel test__ and Distance-based Association Testing
+# Mantel Test and Distance-based Association Testing
 
 ---
-## Distance-based Association Testing
+## Metric-based Association Testing
 
-#### The Inference Goal
-.full-width[.content-box-purple[Given observations of $n$ subjects across two data modalities $\textbf{X}$ and $\textbf{Y}$, is 
-distance (or similarity) in $\textbf{X}$ significantly associated with distance (or similarity) in $\textbf{Y}$?]]
+.full-width[.content-box-purple[__The Inference Goal__<br><br>Given observations of $n$ subjects across two data modalities __X__ and __Y__, is 
+similarity in __X__ significantly associated with similarity in __Y__?]]
 
 #### Setup
 
@@ -221,8 +191,10 @@ vector of scalar phenotype measurements.
 
 - Assume $X$ and $Y$ have been column centered and scaled.
 
+- A bounded, symmetric, positive semi-definite similarity function $\mathcal{K}$, e.g. $\mathcal{K}(u, v) = u^Tv$.
+
 ---
-## Distance-based Association Testing
+## Association Testing Methods
 
 - __Mantel's test__ (Mantel 1967) uses the inner product of the pairwise distance/similarity matrices from $X$ and $Y$.
 
@@ -230,10 +202,19 @@ vector of scalar phenotype measurements.
 between $X$ and $Y$.
 
 - The __distance covariance__ (dCov) test (Szekely, Rizzo, Bakirov, 2007) is defined 
-as the covariance of distances between the random variables $X$ and $Y$, but reduces to 
-the Mantel test and RV coefficient test for certain choices of metrics.
+as the covariance of distances between $X$ and $Y$.
 
-.full-width[.content-box-green[We focus on the __similarity Mantel test__ here, which is equivalent to the RV coefficient after normalization.]]
+- __Adaptive sum of powered score test__ (Xu et. al 2017).
+
+***
+
+#### Challenges
+
+- These approaches suffer from __low power__ in high-dimensions,
+
+- Generally __lack a rigorous methodology__ for chooosing the appropriate metrics and testing parameters and interpreting results,
+
+- Powered alternatives can be difficult to determine.
 
 ---
 ## Mantel Test
@@ -246,34 +227,20 @@ $$H_{ij} = \mathcal{K}_Y(Y_i, Y_j).$$
 
 * The __correlation__ of these distance matrices is
 
-$$r(H, K) := \frac{\langle K, H\rangle}{\|K\|_2\|H\|_2},$$
----
-background-image: url(img/3d_scatter.png)
-background-position: center
-background-size: contain
-class: center, inverse
-
----
-background-image: url(img/dist_and_sim.png)
-background-position: center
-background-size: contain
-class: center, inverse
+$$r(H, K) := \frac{\langle K, H\rangle}{\|K\|\cdot\|H\|},$$
 
 ---
 ## Mantel Test
 
-#### Statistical Question
+.full-width[.content-box-red[__How should we test the significance of the correlation?__]]
 
-__How should we test the significance of the correlation?__
+Mantel's original approach (1967) is to __permute__ rows and columns of one of the pairwise distance matrices to generate the reference distribution.
 
-* The approach originally suggested by Mantel (1967) is to __permute__ rows and columns of one of the pairwise distance matrices to generate the reference distribution.
-
-* That is, with $K$ and $H$ as __similarity matrices__, we calculate test statistic
+That is, for test statistic
 
 $$T = \langle K, H\rangle = \sum_{i = 1}^n\sum_{j = 1}^n K_{ij}H_{ij} = \text{tr}(KH),$$
 
-and calculate the __permutation $P$-value__ by simultaneously permuting 
-rows and columns of $H$ to generate the reference distribution.
+we compute the __permutation $P$-value__ by permuting $H$ to approximate the reference distribution.
 
 ---
 background-image: url(img/Mantel_Diagram.png)
@@ -286,77 +253,187 @@ class: inverse
 
 #### Similarity with Weighted Inner Products
 
-The __weighted inner product__ $\langle \cdot, \cdot \rangle_{\mathcal{W}}$ for some positive semi-definite matrix $\mathcal{W}$, is defined as
+For two vectors $u, v \in \mathbb{R^p}$, the __weighted inner product__ $\langle \cdot, \cdot \rangle_{\mathcal{W}}$ for some positive semi-definite matrix $\mathcal{W}$, is defined as
 
-$$\langle u, v \rangle_{\mathcal{W}} = u \mathcal{W} v^T$$
-for two vectors $u, v \in \mathbb{R^p}$.
+$$\langle u, v \rangle_{\mathcal{W}} = u^T \mathcal{W} v.$$
 
 The __Mantel Test Statistic__ for similarity $\langle \cdot, \cdot \rangle_{\mathcal{W}}$ is 
 
 $$T_{\mathcal{W}} = \text{tr}(X\mathcal{W}X^TYY^T) = Y^TX\mathcal{W}X^TY.$$
+
+--
+count: false
+
+***
+
+.full-width[.content-box-yellow[__Question__<br><br>How does the choice of weight matrix affect the test characteristics?<br><br> How should the weight matrix be chosen?]]
+
+---
+## Weight Matrices
+
+#### Euclidean Inner Product
+
+- Choosing $\mathcal{W} = I_p$ gives $K = XX^T$, which is the Gram matrix for the standard Euclidean inner product.
+
+#### Mahalanobis Similarity
+
+- Choosing $\mathcal{W} = (X^TX)^{-1}$ gives $K = X(X^TX)^{-1}X^T$, which is a similarity matrix related to the Mahalanobis distance.
+
+#### Comparison
+
+- The Mahalnobis similarity adjusts for the covariance structure between features (columns) of $X$
+ 
+---
+class: center, middle, inverse
+background-image: 
+
+```{r echo=FALSE, out.height="80%", out.width="80%"}
+knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/euclid_v_mahal_1.jpg")
+```
+
+---
+class: center, middle, inverse
+background-image: 
+
+```{r echo=FALSE, out.height="80%", out.width="80%"}
+knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/euclid_v_mahal_2.jpg")
+```
+
+---
+class: center, middle, inverse
+background-image: 
+
+```{r echo=FALSE, out.height="80%", out.width="80%"}
+knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/euclid_v_mahal_3.jpg")
+```
+
+--- 
+## Weight Matrices
+
+$$\begin{aligned}
+\hline
+\text{Metric}    & ~~~~~~~\text{Gram Matrix} & \text{Mantel Stat.} \\
+\hline
+\text{Euclidean} & ~~~~~~~~K_R = XX^T & T_R = \text{tr}(K_R H)\\
+\text{Mahalanobis} & ~~~~~~~~K_F = X(X^TX)^{-1}X^T & T_F = \text{tr}(K_F H)\\
+\text{Ridge Kernel} & ~~~~~~~~K_{\lambda} = X(X^TX + \lambda I)^{-1}X^T & T_{\lambda} = \text{tr}(K_{\lambda} H)\\
+\hline
+\end{aligned}$$
+
+---
+background-image: url(img/sample_scatter.jpg)
+background-position: center
+background-size: contain
+class: center, inverse
+
+---
+background-image: url(img/dist_and_sim.png)
+background-position: center
+background-size: contain
+class: center, inverse
+
+---
+background-image: url(img/Hernando&Dustin-Final-01.jpg)
+background-position: center
+background-size: contain
+class: center, inverse
+
 ---
 ## Mantel Test
 
-#### Weight Matrices
+.full-width[.content-box-yellow[__Contributions__<br><br> **Derive testing properties** of the ridge kernel in the Mantel test. <br><br> **Link the random effects, fixed effects, and ridge regression score tests** through the kernel Mantel test framework. <br><br> **Develop the adaptive Mantel test** for simultaneous testing across a range of tuning parameters.]]
 
+#### Advantages of Proposed Methods
 
-- $L_2$ __(Euclidean):__ $\mathcal{W} = I$ yields the usual Euclidean inner product similarity
+- Provides an extremely flexible and computationally practical framework for testing 
+a wide variety of relationships between different modalities.
 
-$$K_R = XX^T ~~~\Rightarrow~~~ T_R = \text{tr}(K_R H)$$
-
-- __Mahalanobis (Statistical Distance):__ $\mathcal{W} = (X^TX)^{-1}$. Yields the projection into $\mathcal{C}(X)$
-
-$$K_F = X(X^TX)^{-1}X^T ~~~\Rightarrow~~~ T_F = \text{tr}(K_FH)$$
-
-- __Ridge Kernel:__ $\mathcal{W} = (X^TX + \lambda I)^{-1}$ for $\lambda > 0$ gives a penalized Mahalanobis inner product
-
-$$K_{\lambda} = X(X^TX + \lambda I)^{-1}X^T ~~~\Rightarrow~~~ T_F = \text{tr}(K_{\lambda}H)$$
+- Simulations show the kernel Mantel test is often more powerful than competing methods.
 
 ---
 ## Mantel Test
 
-__Theorem.__ Let $X$ and $Y$ be as defined above.  Assume $\text{rank}(X) = r$ with singular value decomposition $X = U_{n\times r}D_{r\times r}V_{p\times r}^T$, where $\eta_j, j = 1, \cdots, r$ are the squared singular values. Let $H=YY^T$ and $Z = U^TY$.
+#### Correlation of Similarities
 
-__Fixed Effects__ $$~~~~~~~~~~~~r(H, K_F) = \frac{\sum_{j=1}^r z_j^2}{\sqrt{p} \sum_{i=1}^n y_i^2},$$
+Assume $\text{rank}(X) = r$ with singular value decomposition $X = U_{n\times r}D_{r\times r}V_{p\times r}^T$, where $\eta_j, j = 1, \cdots, r$ are the squared singular values. 
+Let $H=YY^T$ and $Z = U^TY$.
 
-__Random Effects__ $$~~~~~~r(H, K_R) = \frac{\sum_{j=1}^r\eta_j z_j^2}{\sqrt{\sum_{j=1}^r\eta_j^2}\sum_{i=1}^n y_i^2},$$
+__Euclidean Metric__ $~~~~~~~~~~~~r(H, K_R) = \frac{\sum_{j=1}^r\eta_j z_j^2}{\sqrt{\sum_{j=1}^r\eta_j^2}\sum_{i=1}^n y_i^2},$
+
+__Mahalanobis Metric__ $~~~~~~~r(H, K_F) = \frac{\sum_{j=1}^r z_j^2}{\sqrt{p} \sum_{i=1}^n y_i^2},$
     	
-__Ridge Regression__ $$~~~~r(H, K_{\lambda}) = \frac{\sum_{j=1}^{r} \frac{\eta_j}{\lambda + \eta_j}z_j^2}{\sqrt{\sum_{j=1}^{r} \left(\frac{\eta_j}{\eta_j+\lambda}\right)^2} \sum_{i=1}^n  y_i^2}.$$
+__Ridge Similarity__ $~~~~~~~~~~~~~r(H, K_{\lambda}) = \frac{\sum_{j=1}^{r} \frac{\eta_j}{\lambda + \eta_j}z_j^2}{\sqrt{\sum_{j=1}^{r} \left(\frac{\eta_j}{\eta_j+\lambda}\right)^2} \sum_{i=1}^n  y_i^2}.$
+
 
 ---
 ## Mantel Test
 
-__Theorem.__ Let $X$ and $Y$ be as defined above.  Assume $\text{rank}(X) = r$ with singular value decomposition $X = U_{n\times r}D_{r\times r}V_{p\times r}^T$, where $\eta_j, j = 1, \cdots, r$ are the squared singular values. Let $H=YY^T$ and $Z = U^TY$.
+#### Correlation of Similarities
 
-__Fixed Effects__ $$~~~~~~~~~~~~r(H, K_F)  \asymp \sum_{j=1}^r z_j^2,$$
+Assume $\text{rank}(X) = r$ with singular value decomposition $X = U_{n\times r}D_{r\times r}V_{p\times r}^T$, where $\eta_j, j = 1, \cdots, r$ are the squared singular values. 
+Let $H=YY^T$ and $Z = U^TY$.
 
-__Random Effects__ $$~~~~~~r(H, K_R) \asymp \sum_{j=1}^r\eta_j z_j^2,$$
+__Euclidean Metric__ $~~~~~~~~~~~~r(H, K_R) \asymp \sum_{j=1}^r\eta_j z_j^2 ~~~~~= \text{tr}(HK_R) = T_R,$
+
+__Mahalanobis Metric__ $~~~~~~~r(H, K_F) \asymp \sum_{j=1}^r z_j^2 ~~~~~~~~= \text{tr}(HK_F) = T_F,$
     	
-__Ridge Regression__ $$~~~~r(H, K_{\lambda}) \asymp \sum_{j=1}^{r} \frac{\eta_j}{\lambda + \eta_j}z_j^2.$$
-
----
-## Linear Model Score Tests
-
-### Model Definitions
-
-.full-width[.content-box-purple[__Fixed Effects__<br>]]
-$Y \sim N(X\beta, \sigma_{\varepsilon}^2 I_N)$
-
-.full-width[.content-box-green[__Ridge Regression__]] $Y \sim N(X\beta, \sigma_{\varepsilon}^2 I_N), ~ \|\beta\|_2^2 < c(\lambda)$
-
-.full-width[.content-box-yellow[__Random Effects__]] $Y \sim N(0, \sigma^2_b K + \sigma_{\varepsilon}^2 I_N), ~ K = XX^T$
+__Ridge Similarity__ $~~~~~~~~~~~~~r(H, K_{\lambda}) ~\asymp \sum_{j=1}^{r} \frac{\eta_j}{\lambda + \eta_j}z_j^2 ~= \text{tr}(HK_{\lambda}) = T_{\lambda}.$
 
 
 ---
-## Linear Model Score Tests
+## Mantel Test
 
-__Fixed Effects__ $$S_F \asymp \text{tr}(HK_F) = Z^T D(D^TD)^{-1}D^T Z ~\sim ~c \chi^2_p,$$
+#### Linear Model Definitions
 
-__Random Effects__ $$S_R \asymp \text{tr}(HK_R) = Z^TDD^TZ ~\sim~ \sum_{j = 1}^r \eta_j \chi_1^2 ,$$
-    	
-__Ridge Regression__ $$S_{\lambda} \asymp \text{tr}(HK_{\lambda}) = \sum_{j=1}^{r}\frac{\eta_j}{\lambda+\eta_j}z_j^2 ~\sim~ \sum_{j=1}^{r}\frac{\eta_j}{\lambda+\eta_j} \chi_1^2$$
+$$\begin{aligned}
+\hline
+\text{Model Name}    & ~~~~~~\text{Definition} \\
+\hline
+\text{Random Eff.} & ~~~~~~~~Y \sim N(0, \sigma^2_b G + \sigma_{\varepsilon}^2 I_N), ~~~ G = XX^T/p\\
+\text{Fixed Eff.} & ~~~~~~~~Y \sim N(X\beta, \sigma_{\varepsilon}^2 I_N)\\
+\text{Ridge Reg.} & ~~~~~~~~Y \sim N(X\beta, \sigma_{\varepsilon}^2 I_N), ~~~~~~~~~~~~ \|\beta\|_2^2 < c(\lambda)\\
+\hline
+\end{aligned}$$
 
-__Limit Relationship__ $$S_{\lambda} \asymp \text{tr}(HK_{\lambda}) ~\propto~ \left\{\lambda \sum_{j=1}^{r}\frac{\eta_j}{\lambda+\eta_j}z_j^2\right\} ~~~\overset{\lambda \rightarrow \infty} \rightarrow~~ \sum_{j=1}^r \eta_j z_j^2 ~\sim~ \sum_{j = 1}^r \eta_j \chi_1^2$$
+#### Linear Model Score Tests
+
+$$\begin{aligned}
+\hline
+\text{Model}    & ~~~~~~~\text{Score Stat.} & \text{Equivalent Stat.} & ~~~~~~~\text{Null Distribution} \\
+\hline
+\text{Random Eff.} & ~~~~~~~~S_F = Z^T D(D^TD)^{-1}D^T Z & T_F = \text{tr}(K_F H) & ~~~~~~~~c\chi_p^2\\
+\text{Fixed Eff.} & ~~~~~~~~S_R = Z^TDD^TZ & T_R = \text{tr}(K_R H) & ~~~~~~~\sum_{j = 1}^r \eta_j \chi_1^2\\
+\text{Ridge Reg.} & ~~~~~~~~S_{\lambda} = Z^T D(D^TD + \lambda)^{-1}D^T Z & T_{\lambda} = \text{tr}(K_{\lambda}H) & ~~~~~~~\sum_{j=1}^{r}\frac{\eta_j}{\lambda+\eta_j} \chi_1^2\\
+\hline
+\end{aligned}$$
+
+---
+## Mantel Test
+
+#### Limiting Relationship
+
+From the previous results, we get the following limiting relationships between the ridge test, and tests for the fixed effects and random effects models.
+
+$$T_{\lambda = 0} = T_F$$
+
+$$T_{\lambda} \asymp \left\{\lambda \sum_{j=1}^{r}\frac{\eta_j}{\lambda+\eta_j}z_j^2\right\} ~~~\overset{\lambda \rightarrow \infty} \rightarrow~~ T_R$$
+
+Similarly, for the matrix correlations
+
+$$r(H, K_{\lambda = 0}) = r(H, K_F)$$
+
+$$\lim_{\lambda \to \infty} r(H, K_{\lambda}) = r(H, K_R)$$
+
+---
+## Mantel Test
+
+#### Proportion of Variance Explained 
+
+$$R^2(X, Y)=\sqrt{p} \cdot r(H, K_F)$$
+For large $n$ and assuming that $\text{rank}(X)=p$,<br><br>
+
+$$\hat h_{MOM}^2=\frac{tr(HG)-n}{tr(G^2)-n}\approx p\sqrt{\frac{tr(H^2)}{\text{tr}(K_R^2)}}r(H,K_R)\in [r(H,K_R), \sqrt{p}\cdot r(H,K_R)]$$
+
 
 ---
 ## Linear Model Score Tests
@@ -365,18 +442,12 @@ __Limit Relationship__ $$S_{\lambda} \asymp \text{tr}(HK_{\lambda}) ~\propto~ \l
 
 Consider $Z = U^TY$, as the projection of $Y$ into the column space of $X$.  
 
-1. The _Fixed Effects_ model tests the __Euclidean norm__ of $Z$
+1. The _Random Effects_ model tests the __weighted Euclidean norm__ of $Z$, where the $j$th component is weighted by the $j$th eigenvalue $\eta_j$.
 
-2. The _Random Effects_ model tests the __weighted Euclidean norm__ of $Z$, where the $j$th component is weighted by the $j$th eigenvalue $\eta_j$.
+2. The _Fixed Effects_ model tests the __Euclidean norm__ of $Z$
 
-3. The _Ridge Penalization_ __weights the Euclidean norm of $Z$ __proportional to the eigenvalues__, but these weights are now __flattened__ by a factor of $(\lambda + \eta_j)^{-1}$.
+3. The _Ridge Penalization_ __weights the Euclidean norm of $Z$ proportional to the eigenvalues__, but these weights are now __flattened__ by a factor of $(\lambda + \eta_j)^{-1}$.
 
-
----
-background-image: url(img/Hernando&Dustin-Final-01.jpg)
-background-position: center
-background-size: contain
-class: center, inverse
 
 
 ---
@@ -387,97 +458,60 @@ class: center, inverse
 $$K = X(X^TX)^{-1}X^T$$
 $$H = Y(Y^TY)^{-1}Y^T.$$
 
-* The Mantel test procedure can be performed exactly the same as before with 
-test statistic $T = \text{tr}(KH)$.
+- When both $X$ and $Y$ are high dimensional it may make sense to use penalties for both, giving Gram matrices
 
-* Assuming $\text{rank}(K) = p$ and $\text{rank}(H) = q$, we can write
+$$H_{\lambda_y}=Y(Y^TY+\lambda_y I_q)^{-1}Y^T \mbox{ , }$$
+$$K_{\lambda_x}=X(X^TX+\lambda_x I_p)^{-1}X^T.$$
 
-$$\begin{aligned}
-\text{tr}(KK) &= \text{tr}(K) = \text{rank}(K) = p\\
-\text{tr}(HH) &= \text{tr}(H) = \text{rank}(H) = q\\
-r(K, H) &= \frac{1}{\sqrt{pq}}\text{tr}(KH) = \frac{1}{\sqrt{pq}}T
-\end{aligned}$$
+- We can also use the $L_2$ similarity for both:
 
----
-## Heuristic to Choose $\lambda$
-
-- The best linear unbiased predictors for the regression coefficients in the random effects model result from $\lambda = \frac{\sigma^2_{\varepsilon}}{\sigma^2_b}$ as a ridge penalty term.
-
-- Since $h^2$ can be calculated from this noise to signal ratio, we can choose a "reasonable" $\lambda$ with the following simple rule of thumb:
-
-    1. Guess at a reasonable value for $h^2$ from the application context.
-    
-    2. Solve for $\lambda = \frac{p(1 - h^2)}{h^2}$.
-    
-- In practice, understanding $h^2$ as "variance in $Y$ explained by $X$" can help choose a guess for $h^2$
-
-- However, the formula for $h^2$ applies only for homogenous independent effects.  Sparsity and correlation in the data require a different calculation for $h^2$ 
-
+$$H = YY^T$$
+$$K = XX^T$$
 
 ---
-background:
+background-image:
 class: center, middle, inverse
 
-# [2] Adaptive Mantel Test
+# Adaptive Mantel Test
 
 ---
 ## Adaptive Mantel Test
 
-.full-width[.content-box-green[Idea: To simultaneously test a set of tuning parameters, use the minimum $P$-value across all parameters as 
-the test statistic, and approximate the reference distribution using permutations.]
+.full-width[.content-box-red[__Choosing a good penalty term for inference can be difficult, since we must control the type I error.__]]
 
-#### Input & Output
+#### Interpretation of $\lambda$
 
+- The best linear unbiased predictors for the regression coefficients in the random effects model result from $\lambda = \frac{\sigma^2_{\varepsilon}}{\sigma^2_b}$ as a ridge penalty term.
+
+- Since the noise to signal ratio can be calculated from $h^2$, a "reasonable" range for $\lambda$ can be determined from a range for $h^2$
+
+$$\lambda = \frac{p(1 - h^2)}{h^2}.$$
+    
+---
+## Adaptive Mantel Test
+.full-width[.content-box-green[__Idea__<br><br>To simultaneously test a set of tuning parameters, use the __minimum__ _P_-__value__ across all parameters as 
+the test statistic, and approximate the reference distribution using permutations.]]
+
+#### Algorithm
 - __Input:__ 
     + $X, n \times p$ covariates, column centered and scaled
-    
     + $Y, n\times 1$ response, centered and scaled
+    + $\left\{\left(\mathcal{K}_m^{\textbf{X}}, \mathcal{K}_m^{\textbf{Y}}\right)\right\}, m = 1, \cdots, M$
     
-    + $\Lambda$ = list of tuning parameterse
-    
-- __Output:__ $P_{AM}$ = adaptive Mantel $P$-value for test of significant linear association
+- __Output:__ $P_{ADA}$ = adaptive Mantel $P$-value for global test of significant association
+
+- __Package available at [github.com/dspluta/adamant](https://github.com/dspluta/adamant)__
 
 ---
 ## Adaptive Mantel Test
 
 #### Algorithm
 
+.shadow[
 ```{r echo=FALSE}
 knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/adamant_algorithm.png")
 ```
-
----
-## AdaMant Package
-
-__Minimal package available at [github.com/dspluta/adamant](https://github.com/dspluta/adamant)__
-
-- Install with:
-
-```{r, eval = FALSE}
-install.packages(c("devtools", "tidyverse"))
-devtools::install_github("github.com/dspluta/adamant")
-```
-
-- Then load just like any other package:
-
-```{r, cache = TRUE, warning = FALSE, message = FALSE}
-library(tidyverse) # Required for adamant
-library(adamant)
-```
-
----
-## AdaMant Package
-
-```{r, cache = TRUE, warning = FALSE, message = FALSE}
-# Generate Example Data
-set.seed(1234)
-X <- matrix(rnorm(500), nrow = 50, ncol = 10)
-Y <- X %*% rep(c(0, 0.6), 5) + rnorm(50, 0, 2)
-
-# Apply Adaptive Mantel Test
-adamant(X, Y, lambdas_X = c(0, 1, 10, Inf),   
-        n_perms = 2000, P_val_only = TRUE)
-```
+]
 
 ---
 background-image: url("img/simulation_sparsity_plot.png")
@@ -485,50 +519,66 @@ background-size: contain
 class: center, inverse
 
 ---
-background:
-class: center, inverse
+background-image:
+class: center, inverse, middle
 
-# 3. Applications of the Adaptive Mantel Test
-
----
-background-image: url(img/experiment-setup2.png)
-background-size: contain
-class: inverse
+# Applications of the Adaptive Mantel Test
 
 ---
-background-image: url(img/fronto-parietal-slide.png)
+background-image: url(img/vwm_schematic_small.png)
+background-size: fill
+class: center, inverse
+
+## Visual Working Memory Experiment
+
+---
+background-image: url(img/vwm_schematic_annotated_small.png)
+background-size: fill
+class: center, inverse
+
+## Visual Working Memory Experiment
+
+---
+background-image: url(img/two_eeg_chans_plot.png)
 background-size: contain
 class: center, inverse
 
----
-background-image: url(img/attention_brain.png)
-background-size: contain
-class: center, inverse
+## Visual Working Memory Experiment
 
 ---
 ## Related Previous Results
 
-### EEG Coherence During Working Memory Tasks
+- _Sauseng et al. (2005)_ also found that __theta__ and __alpha coherence__ play a significant role in “top-down” control during working memory tasks
 
-- _Onton et al. (2005)_ found increases in __frontal midline theta power__ with increasing memory load
-during a verbal-working memory task
+- _Jiang et al. (2005)_ A study of EEG power and coherence in patients with mild cognitive impairment revealed 
+differences in __theta, alpha, and beta band__ power between MCI and normal controls during working memory tasks.
 
-- _Sauseng et al. (2005)_ also found that __alpha coherence__ plays a significant role in “top-down” control during working memory tasks
+- _Zhang et al. (2007)_ Found that __polymorphisms in a dopamine receptor gene affect neuronal activity__ during working memory.
 
-- _Simons and Spiers (2003)_ identified important interactions between the __prefrontal and medial temporal lobes__ for the processing of long-term memory
+- _Vogler et al. (2014)_ __Estimated SNP-based heritability for working memory performance__ to be in the range of $h^2 = 0.31$ to $0.41 (P = 0.0008$).
+
+- _Cassidy et al. (2016)_ detected relationships between __dynamic connectivity__ during __working memory__ tasks and __dopamine release in schizophrenics__.
+
+- _Dai et al. (2017)_ found topological reorginzation of EEG cortical __connectivity in the theta and alpha bands__ during working memory tasks.
+
+---
+background-image: url(img/brain_vwm.jpg)
+background-size: contain
+class: center, inverse
 
 ---
 ## SNPs Related to Alzheimer's Disease
 
-### Info on SNPs from [SNPedia](https://www.snpedia.com/index.php/Alzheimer%27s_disease):
+#### Info on SNPs from [SNPedia](https://www.snpedia.com/index.php/Alzheimer%27s_disease):
 
-- _rs2227564_ A functional polymorphism within plasminogen activator urokinase (PLAU) which some studies have shown to be associated with Alzheimer's disease. _(Riemenschneider et al., 2006)_
+- _rs2227564_: A functional polymorphism within plasminogen activator urokinase (PLAU) which some studies have shown to be associated with Alzheimer's disease. _(Riemenschneider et al., 2006)_
   
-- _rs3851179_: A study of over 5,000 Alzheimer's disease patients (and over 10,000 controls) found a slight protective effect of the (A) allele of this SNP...  The association of this SNP and late-onset Alzheimer's disease was replicated over a total of another 1829 cases (and 2576 controls). _(Carasquillo et al., 2010)_
+- _rs3851179_: A slight protective effect of the (A) allele of this SNP was found in _(Carasquillo et al., 2010)_
   
-- _rs3818361_:  A SNP associated with the complement component (3b/4b) receptor 1 CR1 gene. The association of this SNP and late-onset Alzheimer's disease was replicated over a total of another 1829 cases (and 2576 controls). _(Carasquillo et al., 2010)_
+- _rs3818361_:  A SNP associated with the complement component (3b/4b) receptor 1 CR1 gene. _(Carasquillo et al., 2010)_
   
-- _rs9886784_: An intergenic SNP on chromosome 9, is reported to influence the risk for Alzheimer's disease based on a study of ~1100 Canadian patients. The risk allele is (A); the odds ratio is 3.23 (CI: 1.79 - 5.84). _(Li et al., 2007)_
+- _rs9886784_: An intergenic SNP on chromosome 9, is reported to influence the risk for Alzheimer's disease; the odds ratio is 3.23 (CI: 1.79 - 5.84). _(Li et al., 2007)_
+
 
 ---
 ## Data Description
@@ -547,18 +597,31 @@ during a verbal-working memory task
   + All 13 SNPs passed standard MAF and HWE quality control checks
 
 ---
-background-image: url(img/two_eeg_chans_plot.png)
-background-size: contain
-class: middle, center, inverse
+## Adaptive Mantel Test Results
 
----
-background-image: url(img/table_small.png)
-class: middle, center, inverse
+- Results of adaptive Mantel test for association of AD SNPs and EEG Coherence at particular frequency bands
 
----
-background-image: url(img/delta.png)
-background-size: contain
-class: center, middle, inverse
+- Used $L_2$ similarity for SNPs, and ridge kernel similarity for coherence, with penalty terms $\Lambda = \{0.5, 1, 5, 10, 100, 1000, \infty\}$ 
+  
+<br><br>
+
+$$\begin{aligned}
+\hline
+\text{Band} & ~~~~\text{Channels} & ~~~~P-\text{value}\\
+\hline
+\beta & ~~~~\text{All} & 0.619\\
+\beta & ~~~~\text{Frontal} & 0.517\\
+\hline
+\alpha & ~~~~\text{All} & ~~~~0.075\\
+\alpha & ~~~~\text{Frontal} & ~~~~0.381\\
+\hline
+\theta & ~~~~\text{All} & ~~~~0.416\\
+\theta & ~~~~\text{Frontal} & ~~~~0.081\\
+\hline
+\delta & ~~~~\text{All} & 0.015\\
+\delta & ~~~~\text{Frontal} & 0.088\\
+\hline
+\end{aligned}$$
 
 ---
 background-image: url(img/theta.png)
@@ -575,43 +638,58 @@ background-image: url(img/beta.png)
 background-size: contain
 class: center, middle, inverse
 
----
-background-image: url(img/gamma.png)
-background-size: contain
-class: center, middle, inverse
 
 ---
 class: center, middle, inverse
 background-image: 
 
-# Manifold mixed effects model
-
-# Methods for Dynamic Connectivity
-
-
-
-
-
-# Current and Future Work
+# Methods for Dynamic Connectivity Analysis
 
 ---
-## Further Analysis of VWM Coherence
+## Dynamic Connectivity
 
-### Goals
+#### DFC for fMRI with Time-varying BOLD Phase Coherence
 
-- __Testing and comparing coherence and genetic effects during different phases of the VWM experiment,__ e.g. encoding vs comparison
+Calculate BOLD Phase Coherence Connectivity to obtain a $q \times q \times T$ dFC matrix.
 
-- __Test other important SNP sets and connectivity measures:__
-
-  + SNPs: Dopamine pathways, neurotransmitters, evolutionarily recently selected SNPs
+- Computing Phase Coherence:
   
-  + Connectivity: Partial coherence, PDC, total variation distance
-
-- __Modeling genetic effects on EEG dynamic connectivity__
-
-  + Extending Chee-Ming's switching factor VAR approach
+  + Estimate phase $\theta(j, t)$ of BOLD signals in area $j$ at time $t$ using Hilbert transform
   
-  + Bayesian approaches, e.g. Multi-output Gaussian Process model
+  + Given phase of the BOLD signals, phase coherence between areas $q$ and $q'$ at time $t$ (denoted $dFC(q, q', t)$) is defined as
+  
+  $$dFC(q, q', t) = \cos(\theta(q, t) - \theta(q', t)).$$
+
+- _Leading Eigenvector_ of each $dFC(t)$ is used to capture connectivity structures.
+
+---
+background-image: url(img/dfc.jpg)
+background-size: contain
+class: inverse
+
+---
+## Dynamic Connectivity
+
+#### Studying FC Dynamics
+
+- Compute time-versus-time matrix to represent functional connectivity dynamics (FCD), where each $FCD(t_x, t_y)$ measures the resemblance between the $dFC$ at times $t_x$ and $t_y$ using Pearson correlation or cosine similarity:
+
+$$FCD(t_x, t_y) = \frac{\left\langle V_1(t_x),V_1(t_y)\right\rangle}{\|V_1(t_x)\|\|V_1(t_y)\|} \in [-1, 1].$$
+  
+- _FC States:_ detect discrete FC states with $k$-means clustering on the leading eigenvectors $V_1(t)$ across all time points and subjects.
+
+- _Between group Comparisons:_ Group differences are tested using permutation-based paired t-test 
+
+---
+background-image: url(img/GrangerCausalityIllustration.svg)
+background-size: contain
+class: inverse, center
+
+## Effective Connectivity
+
+```{r echo=FALSE, out.height="90%", out.width="90%"}
+#knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/GrangerCausalityIllustration.svg")
+```
 
 ---
 background-image: url(img/SF-VAR_original_schematic.png)
@@ -624,7 +702,6 @@ class: inverse
 background-image: url(img/eegF2001_winsize32.png)
 background-size: contain
 class: inverse
-
 
 ---
 ## Multi-subject Dynamic Connectivity Modeling
@@ -643,62 +720,145 @@ class: inverse
   - proportion of time spent in a particular state
   - frequency of a state during certain phases of the experiment
 
----
-## Switching Factor VAR for Dynamic Connectivity
-
-### Statistical Challenges
-
-#### Choosing model parameters:
-
-+ __Lag Order__
-  - AIC or Hannan-Quinn Criterion
-  
-+ __Number of Clusters__
-  - Scientifically informed (how many distinct states might we reasonably expect?)
-  - Exploratory analysis
-  - DP Mixture Model
-  
-+ __Window size and Minimum Regime Length__
-  - Scientifically informed (lower bound given by analysis targets, upper bound by experimental setting)
-  - Exploratory Analysis
-  - Selection via goodness of fit methods?
 
 ---
-## Switching Factor VAR for Dynamic Connectivity
+class: center, middle, inverse
+background-image: 
 
-### Statistical Challenges
-
-#### Incorporating Covariates like Genetics
-
-+ Requires common states across subjects
-
-+ How genetics may influence different features of connectivity is largely unknown, making it difficult to know which models will be scientifically sensible _a priori_.
-
-+ Model interpretation may be challenging
+# Manifold Regression
 
 ---
-## Multi-subject Dynamic Connectivity Modeling
+## Manifold Regression
 
-### Other Considerations
+.pull-left[.full-width[.content-box-green[__Riemannian Manifold__<br><br>A smooth surface such that each point has a locally Euclidean neighborhood.]]]
+.pull-right[
+```{r echo=FALSE, out.height="80%", out.width="80%"}
+knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/End_of_universe.jpg")
+```
+]
 
-+ DP Clustering instead of $K$-means
-  
-+ Penalized fitting for TV-VAR to encourage smoothness over time
+#### Some Manifolds of Interest
 
-+ Fixed design experiment and temporal alignment
+1. $\text{Sym}^+(q)$, $q \times q$ __positive definite matrices__
 
-+ Fixed choice of basis states for scientific relevance and greater interpretability
+2. $O(q)$ and  $SO(q)$, the groups of __orthogonal__ and __special orthogonal__ $q \times q$  matrices
 
-+ Can we learn the states?  Inspiration from Tensor Regression...
+3. __Stiefel Manifold__, $q \times k$ matrices of orthonormal vectors.
+
 
 ---
-count: false
+background-image: 
+class: center, inverse
+
+## Positive Definite Cone
+
+```{r echo=FALSE, out.height="80%", out.width="80%"}
+knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/pd_cone.png")
+```
+
+---
+## Manifold Regression
+
+#### Specification of the Geodesic Model
+
+- Suppose a $q \times q$ PD matrix $S_i \in \text{Sym}^+(q)$ and a $k \times 1$ vector of covariates are observed for each subject $i = 1, \cdots, n$.
+
+- Let $\beta \in \mathbb{R}^p$ be a $p \times 1$ vector of regression coefficients
+
+- $\Sigma(\cdot, \cdot): \mathbb{R^k}\times\mathbb{R^p} \to \text{Sym}^+(q)$. 
+
+- We are interested in modeling the __conditional mean__ of $S_i$ given $x_i$, denoted 
+
+$$\Sigma_i(\beta) = \Sigma(x_i, \beta) \in \text{Sym}^+(q).$$  
+
+---
+## Manifold Regression
+
+#### Specification of the Geodesic Model
+
+- Further let:
+  + $D \in \text{Sym}^+(q)$ be the intercept matrix $D = \Sigma(0, \beta)$, with $D = BB^T$ for some $B \in GL(q)$
+  + $Y_D(x_i, \beta) = Y_{D, i} \in \text{Sym}(q)$ be a "directional" matrix
+  + $C_i(\beta)$ be a Cholesky square root $\Sigma(x_i, \beta) = C_i(\beta)C_i(\beta)^T$. 
+ 
+- The __geodesic model__ is given by
+
+$$\Sigma(x_i, \beta) = B\exp(B^{-1}Y_{D, i}(\beta)B^{-T})B^T = C_i(\beta)C_i(\beta)^T.$$
+
+---
+## Manifold Regression
+
+- The __geodesic model__ is given by
+
+$$\Sigma(x_i, \beta) = B\exp(B^{-1}Y_{D, i}(\beta)B^{-T})B^T = C_i(\beta)C_i(\beta)^T.$$
+
+- The __residuals__ are defined as 
+
+$$\mathcal{E}_i(\beta) = \log(C_i(\beta)^{-1}S_iC_i(\beta)^{-T}).$$
+
+The intrinsic regression model is then specified by $\mathbb{E}[\mathcal{E}_i(\beta) | x_i] = 0$, where the intrinsic least squares estimate of $\beta$ is defined as 
+
+$$\hat \beta = \arg\min_{\beta}\sum_{i = 1}^n \text{tr}\left(\mathcal{E}_i(\beta)^2\right).$$
+
+
+---
+background-image: 
+class: inverse
+
+## Manifold Regression
+
+#### Geodesic Model
+
+```{r echo=FALSE, out.height="90%", out.width="90%"}
+knitr::include_graphics("/home/dustin/Dropbox/Research/uci-advancement/img/zhu_geodesic_manifold.jpg")
+```
+
+---
+## Manifold Regression
+
+#### Manifold Mixed Effects Model
+
+- Kim et al. (2017) have proposed an extension of the linear mixed effects model to manifold-valued responses.  
+
+- Let $Y_{[ij]}, B, B_i \in \mathcal{M}, V \in T_B\mathcal{M}^p, U_i \in T_{h[ij]}\mathcal{M}^q, x_{[ij]}\in \mathbb{R}^p, z_{[ij]} \in \mathbb{R}^q$, and let $\Gamma_{B \to B_i}V$ be the parallel transport of $V$ from $B$ to $B_i$.  
+
+- A simplified form of the __manifold mixed effects model__ can be stated as
+
+$$Y_{[ ij ]} = \text{Exp}(\text{Exp}(B_i, \Gamma_{B\to B_i} (V)x_{[ij]}, \varepsilon_{[ij]}))$$
+$$B_i = \text{Exp}(B, U_i).$$
+
+$$\Gamma_{B \to I} U_i ~\sim~ \mathcal{N}_{SYM}(0, \sigma_U^2),$$
+
+where $\mathcal{N}_{SYM}$ is the normal distribution over symmetric positive definite matrices.
+
+---
+## Manifold Regression
+
+#### Heritability Estimation for Manifold-valued Phenotype
+
+- Analagous to the definition of the variance components model for heritability analysis, we propose a random effects model for manifold-valued phenotypes
+
+- For this model, we instead consider the random effects $U_i$ to have a common aggregate genetic effect $\sigma^2_U$
+
+$$\Gamma_{B \to I} U ~\sim~ \mathcal{N}_{SYM}(0, \sigma^2_U G)$$
+
+---
+
+### Links
+
+- __Adaptive Mantel Test Paper:__ [arxiv.org/pdf/1712.07270.pdf](https://arxiv.org/pdf/1712.07270.pdf)
+
+- __Slides available:__ [github.com/dspluta/Presentations/](https://github.com/dspluta/Presentations/)
+
+- __Adaptive Mantel `R` Package:__ [github.com/dspluta/adamant](https://github.com/dspluta/adamant)
+
+
+---
 # References
 
 * Wu M., et al. Kernel Machine SNP-set Testing under Multiple Candidate Kernels. Genetic Epideomiology. 2013. 37(3): 267-275.
 
 * Cai T., et al., Kernel Machine Approach to Testing the Significance of Multiple Genetic Markers for Risk Prediction. Biometrics. 2011. 67(3): 975-986.
-
 
 * Ge T, et al. Massively Expedited Genome-Wide 
 Heritability Analysis (MEGHA). PNAS. 2015. 112, 
@@ -722,6 +882,7 @@ count: false
 # Appendix
 
 ---
+count: false
 ## Adaptive Mantel Test
 
 Computing the adaptive Mantel test can be done efficiently using either the SVD or a linear algebra 
@@ -738,6 +899,7 @@ $$T = \sum_{i = 1}^r \eta_i z_i^2$$
 - Using $B$ permutations gives a total complexity of $O(np^2 + Bn^2)$.
 
 ---
+count: false
 ## Adaptive Mantel Test
 
 ### Linear Algebra Trick
@@ -755,6 +917,7 @@ of tuning parameters included.
 - The computations can be easily parallelized.
 
 ---
+count: false
 ## EEG Pre-processing
 
   - __EEG pre-processing:__
@@ -771,6 +934,7 @@ of tuning parameters included.
 
 
 ---
+count: false
 ## Most Significant Channel Pairs for $h^2$
 
 ```{r, echo = FALSE}
@@ -780,7 +944,7 @@ DT::datatable(dat_results %>% filter(band == 2 | band == 3, Pval < 0.015) %>%
 ```
 
 ---
-
+count: false
 # Estimating Heritability with GCTA
 
 * While GCTA is a sensible and feasible approach to 
@@ -846,3 +1010,65 @@ estimating heritability, it may prove impractical due to sample size limitations
 </table>
 
 .footnote[http://cnsgenomics.com/shiny/gctaPower/]
+
+
+---
+## Multivariate Mantel
+
+__Hooper's trace correlation__ (Hooper 1959) is defined as 
+
+$$r_T^2 = \frac{1}{q}\text{tr}\left((Y^TY)^{-1}Y^TX(X^TX)^{-1}X^TY)\right)$$
+The relationship between Hooper's trace correlation and $r(H_F,K_F)$ follows from $\text{tr}(H_F) = q, \text{tr}(K_F) = p$:
+
+$$r_T^2 = \sqrt{\frac{p}{q}}r(H_F, K_F).$$
+
+---
+## Multivariate Mantel
+
+#### Multivariate Heritability
+
+Following Ge et al. (2016), a multivariate version of $h^2$ can be defined
+
+$$h^2 = \frac{\text{tr}(\Sigma_g)}{\text{tr}(\Sigma_g) + \text{tr}(\Sigma_{\varepsilon})}.$$
+A method of moments estimator for $h^2$ is
+
+$$\hat h^2_{MOM}=\frac{tr(K_R)tr(\hat \Sigma_b)}{tr(H_R)}=\frac{tr(K_R)}{tr(H_R)} \frac{tr(H_RK_R)-tr(H_R)tr(K_R)/n}{tr(K_R^2)-tr^2(K_R)/n}.$$
+
+When both $X$ and $Y$ are column-standardized and full column rank it can be shown that
+
+$$\hat h^2_{MOM}\in \left[\frac{1}{\sqrt{q}}r(H_R,K_R),\sqrt{p}~r(H_R,K_R)\right]$$
+
+---
+## Multivariate Mantel
+
+.full-width[.content-box-yellow[__Interpretation of Tuning Parameters__<br><br>In general, a large tuning parameter __reduces the adjustment for the correlation between features__, and so approaches the use of __Euclidean distance__ in that modality as the parameter increases.]]
+
+#### Limiting Relationships
+
+$$\lim _{\lambda_x\rightarrow 0, \lambda_y\rightarrow 0} r(H_{\lambda_y},K_{\lambda_x})=r(H_F, K_F)$$
+$$\lim _{\lambda_x\rightarrow \infty, \lambda_y\rightarrow \infty} r(H_{\lambda_y},K_{\lambda_x})=r(H_R, K_R)$$
+
+#### Penalized Likelihood
+
+$$-\ell \propto c_1 log|\Sigma_e| + tr[(Y-XB)\Sigma_e^{-1}(Y-XB)^T] + \lambda_x tr[B\Sigma_e^{-1}B^T] + \lambda_y tr[\Sigma_e^{-1}] + c_2$$
+
+<!-- - $\lambda_x$ shrinks $B$ toward zero: similar to the univariate case, we can replace $X(X^T+\lambda_x I_p)^{-1}X^T$ with $XX^T$ when $\lambda_x$ is large. -->
+
+<!-- - $\lambda_y$ encourages smaller sums of the reciprocals of the eigenvalues of $\Sigma_{\varepsilon}$, thus when $\lambda_y$ is large, $\Sigma_e$ is approximately proportional to the identity matrix. -->
+
+
+---
+background-image: 
+background-position: center
+background-size: contain
+
+## AdaMant Package
+
+```{r, cache = TRUE, warning = FALSE, message = FALSE}
+set.seed(1234)
+X <- matrix(rnorm(500), nrow = 50, ncol = 10)
+Y <- X %*% rep(c(0, 0.6), 5) + rnorm(50, 0, 2)
+
+adamant(X, Y, lambdas_X = c(0, 1, 10, Inf),   
+        n_perms = 2000, P_val_only = TRUE)
+```
